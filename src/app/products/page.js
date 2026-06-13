@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Search, SlidersHorizontal, X } from "lucide-react";
 import { fetchProducts } from "@/lib/api";
 import ProductCard from "@/components/products/ProductCard";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
 const categories = [
   { id: "all", name: "All" },
@@ -58,7 +59,10 @@ export default function ProductsPage() {
           </div>
           <div className="flex gap-2 sm:gap-3">
             <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} className="flex-1 sm:flex-none px-3 sm:px-4 py-3 bg-white border border-gray-200 rounded-2xl text-sm outline-none cursor-pointer">
-              <option value="featured">Featured</option><option value="price-low">Price: Low-High</option><option value="price-high">Price: High-Low</option><option value="name">Name</option>
+              <option value="featured">Featured</option>
+              <option value="price-low">Price: Low-High</option>
+              <option value="price-high">Price: High-Low</option>
+              <option value="name">Name: A-Z</option>
             </select>
             <button onClick={() => setShowFilters(true)} className="sm:hidden px-3 py-3 bg-white border border-gray-200 rounded-2xl text-dark-600"><SlidersHorizontal size={18} /></button>
           </div>
@@ -86,44 +90,27 @@ export default function ProductsPage() {
             <>
               <div className="fixed inset-0 bg-black/40 z-40 sm:hidden" onClick={() => setShowFilters(false)} />
               <div className="fixed inset-y-0 left-0 w-[280px] max-w-[85vw] bg-white z-50 p-5 overflow-y-auto sm:hidden shadow-2xl">
-                <div className="flex items-center justify-between mb-6">
-                  <h2 className="font-bold text-dark-900 text-lg">Filters</h2>
-                  <button onClick={() => setShowFilters(false)} className="p-2 text-dark-600 hover:bg-gray-100 rounded-xl"><X size={20} /></button>
-                </div>
+                <div className="flex items-center justify-between mb-6"><h2 className="font-bold text-dark-900 text-lg">Filters</h2><button onClick={() => setShowFilters(false)} className="p-2 text-dark-600 hover:bg-gray-100 rounded-xl"><X size={20} /></button></div>
                 <h3 className="text-xs font-semibold text-dark-400 uppercase tracking-wider mb-3">Category</h3>
-                <div className="space-y-1 mb-8">
-                  {categories.map((cat) => (
-                    <button key={cat.id} onClick={() => { setActiveCategory(cat.id); setShowFilters(false); }} className={`block w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium ${activeCategory === cat.id ? "bg-brand-50 text-brand-700" : "text-dark-600 hover:bg-gray-50"}`}>{cat.name}</button>
-                  ))}
-                </div>
+                <div className="space-y-1 mb-8">{categories.map((cat) => (<button key={cat.id} onClick={() => { setActiveCategory(cat.id); setShowFilters(false); }} className={`block w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium ${activeCategory === cat.id ? "bg-brand-50 text-brand-700" : "text-dark-600 hover:bg-gray-50"}`}>{cat.name}</button>))}</div>
                 <h3 className="text-xs font-semibold text-dark-400 uppercase tracking-wider mb-3">Brand</h3>
-                <div className="space-y-1">
-                  {brands.map((brand) => (
-                    <button key={brand} onClick={() => { setActiveBrand(brand); setShowFilters(false); }} className={`block w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium ${activeBrand === brand ? "bg-brand-50 text-brand-700" : "text-dark-600 hover:bg-gray-50"}`}>{brand}</button>
-                  ))}
-                </div>
+                <div className="space-y-1">{brands.map((brand) => (<button key={brand} onClick={() => { setActiveBrand(brand); setShowFilters(false); }} className={`block w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium ${activeBrand === brand ? "bg-brand-50 text-brand-700" : "text-dark-600 hover:bg-gray-50"}`}>{brand}</button>))}</div>
               </div>
             </>
           )}
 
           <div className="flex-1 min-w-0">
             {loading ? (
-              <div className="text-center py-20"><div className="w-12 h-12 border-4 border-brand-500 border-t-transparent rounded-full animate-spin mx-auto" /></div>
+              <LoadingSpinner />
             ) : filtered.length > 0 ? (
               <>
                 <p className="text-xs sm:text-sm text-dark-500 mb-4 sm:mb-6">{filtered.length} product{filtered.length !== 1 ? "s" : ""} found</p>
-                <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-5">
-                  {filtered.map((product) => (
-                    <ProductCard key={product.id} product={product} />
-                  ))}
+                <div className="grid grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-5">
+                  {filtered.map((product) => <ProductCard key={product.id} product={product} />)}
                 </div>
               </>
             ) : (
-              <div className="text-center py-16 sm:py-20">
-                <span className="text-5xl sm:text-6xl block mb-4">🔍</span>
-                <h3 className="text-lg sm:text-xl font-semibold text-dark-700 mb-2">No products found</h3>
-                <p className="text-dark-500 text-sm">Try adjusting your filters</p>
-              </div>
+              <div className="text-center py-16 sm:py-20"><span className="text-5xl sm:text-6xl block mb-4">🔍</span><h3 className="text-lg sm:text-xl font-semibold text-dark-700 mb-2">No products found</h3><p className="text-dark-500 text-sm">Try adjusting your filters</p></div>
             )}
           </div>
         </div>

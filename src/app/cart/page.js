@@ -1,26 +1,33 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
 import { Trash2, Minus, Plus, ArrowLeft, ArrowRight } from "lucide-react";
 import { formatPrice } from "@/lib/whatsapp";
 
 export default function CartPage() {
   const [cart, setCart] = useState([]);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem("cart") || "[]");
-    setCart(saved);
+    try {
+      const saved = JSON.parse(localStorage.getItem("cart") || "[]");
+      setCart(Array.isArray(saved) ? saved : []);
+    } catch (e) {
+      setCart([]);
+    }
+    setLoaded(true);
   }, []);
 
   const updateQuantity = (id, delta) => {
-    const updated = cart.map((item) => {
-      if (item.id === id) {
-        const newQty = item.quantity + delta;
-        return newQty > 0 ? { ...item, quantity: newQty } : null;
-      }
-      return item;
-    }).filter(Boolean);
+    const updated = cart
+      .map((item) => {
+        if (item.id === id) {
+          const newQty = item.quantity + delta;
+          return newQty > 0 ? { ...item, quantity: newQty } : null;
+        }
+        return item;
+      })
+      .filter(Boolean);
     setCart(updated);
     localStorage.setItem("cart", JSON.stringify(updated));
     window.dispatchEvent(new Event("storage"));
@@ -33,90 +40,67 @@ export default function CartPage() {
     window.dispatchEvent(new Event("storage"));
   };
 
+  if (!loaded) return null;
+
   const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const shipping = 0;
-  const total = subtotal + shipping;
 
   if (cart.length === 0) {
     return (
-      <main className="min-h-screen pt-32 pb-20 bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
+      <main className="min-h-screen pt-40 pb-20 bg-gray-50 flex items-center justify-center">
+        <div className="text-center px-4">
           <span className="text-7xl block mb-6">🛒</span>
           <h1 className="text-3xl font-bold text-dark-900 mb-3">Your cart is empty</h1>
-          <p className="text-dark-500 mb-8">Looks like you haven&apos;t added anything yet.</p>
-          <Link href="/products" className="inline-flex items-center gap-2 px-8 py-3 bg-dark-900 text-white font-semibold rounded-2xl hover:bg-dark-800 transition-colors">
+          <p className="text-dark-500 mb-8">Add some products to get started.</p>
+          <a href="/products" className="inline-flex items-center gap-2 px-8 py-3 bg-dark-900 text-white font-semibold rounded-2xl">
             <ArrowLeft size={18} /> Browse Products
-          </Link>
+          </a>
         </div>
       </main>
     );
   }
 
   return (
-    <main className="min-h-screen pt-32 pb-20 bg-gray-50">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <main className="min-h-screen pt-40 pb-20 bg-gray-50">
+      <div className="max-w-4xl mx-auto px-4">
         <div className="flex items-center justify-between mb-10">
           <div>
-            <p className="text-sm font-semibold text-brand-600 uppercase tracking-wider mb-1">Shopping Cart</p>
-            <h1 className="text-3xl md:text-4xl font-bold text-dark-900 tracking-tight">{cart.length} item{cart.length !== 1 ? "s" : ""}</h1>
+            <h1 className="text-3xl font-bold text-dark-900">Shopping Cart</h1>
+            <p className="text-dark-500 text-sm mt-1">{cart.length} item{cart.length !== 1 ? "s" : ""}</p>
           </div>
-          <Link href="/products" className="text-dark-500 hover:text-brand-600 transition-colors flex items-center gap-1 text-sm font-medium">
+          <a href="/products" className="text-dark-500 hover:text-brand-600 text-sm font-medium flex items-center gap-1">
             <ArrowLeft size={16} /> Continue Shopping
-          </Link>
+          </a>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Cart Items */}
           <div className="lg:col-span-2 space-y-4">
             {cart.map((item) => (
-              <div key={item.id} className="bg-white rounded-2xl p-5 flex gap-4 items-center border border-gray-100 hover:shadow-md transition-shadow">
-                <div className="w-20 h-20 bg-gray-50 rounded-xl flex items-center justify-center flex-shrink-0 text-3xl">
-                  📱
-                </div>
+              <div key={item.id} className="bg-white rounded-2xl p-5 flex gap-4 items-center border">
+                <div className="w-16 h-16 bg-gray-50 rounded-xl flex items-center justify-center text-2xl flex-shrink-0">📱</div>
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-semibold text-dark-900 truncate">{item.name}</h3>
-                  <p className="text-brand-600 font-bold mt-1">{formatPrice(item.price * item.quantity)}</p>
+                  <h3 className="font-semibold text-dark-900 text-sm truncate">{item.name}</h3>
+                  <p className="text-dark-900 font-bold mt-1">{formatPrice(item.price * item.quantity)}</p>
                 </div>
                 <div className="flex items-center gap-2">
-                  <button onClick={() => updateQuantity(item.id, -1)} className="p-2 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                    <Minus size={14} />
-                  </button>
-                  <span className="w-8 text-center font-semibold text-dark-900">{item.quantity}</span>
-                  <button onClick={() => updateQuantity(item.id, 1)} className="p-2 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                    <Plus size={14} />
-                  </button>
+                  <button onClick={() => updateQuantity(item.id, -1)} className="p-1.5 bg-gray-50 rounded-lg"><Minus size={14} /></button>
+                  <span className="w-6 text-center font-semibold text-sm">{item.quantity}</span>
+                  <button onClick={() => updateQuantity(item.id, 1)} className="p-1.5 bg-gray-50 rounded-lg"><Plus size={14} /></button>
                 </div>
-                <button onClick={() => removeItem(item.id)} className="p-2 text-dark-400 hover:text-red-500 transition-colors">
-                  <Trash2 size={18} />
-                </button>
+                <button onClick={() => removeItem(item.id)} className="p-1.5 text-gray-400 hover:text-red-500"><Trash2 size={16} /></button>
               </div>
             ))}
           </div>
 
-          {/* Order Summary */}
-          <div className="bg-white rounded-2xl p-6 border border-gray-100 h-fit sticky top-28">
-            <h2 className="text-lg font-bold text-dark-900 mb-6">Order Summary</h2>
-            <div className="space-y-3 text-sm mb-6">
-              <div className="flex justify-between text-dark-600">
-                <span>Subtotal</span>
-                <span>{formatPrice(subtotal)}</span>
-              </div>
-              <div className="flex justify-between text-dark-600">
-                <span>Shipping</span>
-                <span className="text-green-600 font-medium">Free</span>
-              </div>
-              <div className="border-t pt-3 flex justify-between font-bold text-dark-900 text-base">
-                <span>Total</span>
-                <span>{formatPrice(total)}</span>
-              </div>
+          <div className="bg-white rounded-2xl p-6 border h-fit">
+            <h2 className="font-bold text-dark-900 mb-4">Order Summary</h2>
+            <div className="space-y-2 text-sm mb-4">
+              <div className="flex justify-between"><span className="text-dark-500">Subtotal</span><span>{formatPrice(subtotal)}</span></div>
+              <div className="flex justify-between"><span className="text-dark-500">Shipping</span><span className="text-green-600">Free</span></div>
+              <div className="border-t pt-2 flex justify-between font-bold"><span>Total</span><span>{formatPrice(subtotal)}</span></div>
             </div>
-            <Link
-              href="/checkout"
-              className="w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-dark-900 text-white font-semibold rounded-2xl hover:bg-dark-800 transition-colors"
-            >
-              Proceed to Checkout <ArrowRight size={18} />
-            </Link>
-            <p className="text-xs text-dark-400 text-center mt-4">Free shipping on all orders</p>
+            <a href="/checkout" className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-dark-900 text-white font-semibold rounded-2xl">
+              Checkout <ArrowRight size={18} />
+            </a>
           </div>
         </div>
       </div>

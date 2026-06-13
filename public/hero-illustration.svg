@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <defs>
+    <linearGradient id="phoneGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#60A5FA;stop-opacity:0.3"/>
+      <stop offset="100%" style="stop-color:#3B82F6;stop-opacity:0.1"/>
+    </linearGradient>
+    <linearGradient id="laptopGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FBBF24;stop-opacity:0.3"/>
+      <stop offset="100%" style="stop-color:#F59E0B;stop-opacity:0.1"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Phone -->
+  <rect x="60" y="80" width="120" height="220" rx="20" fill="url(#phoneGrad)" stroke="#60A5FA" stroke-width="2" opacity="0.8"/>
+  <rect x="75" y="100" width="90" height="150" rx="8" fill="#1F2937" opacity="0.5"/>
+  <circle cx="120" cy="270" r="4" fill="#60A5FA" opacity="0.5"/>
+  
+  <!-- Laptop -->
+  <rect x="200" y="180" width="180" height="120" rx="12" fill="url(#laptopGrad)" stroke="#FBBF24" stroke-width="2" opacity="0.8"/>
+  <rect x="215" y="195" width="150" height="85" rx="6" fill="#1F2937" opacity="0.5"/>
+  <rect x="220" y="260" width="140" height="8" rx="4" fill="#FBBF24" opacity="0.3"/>
+  
+  <!-- Watch -->
+  <rect x="80" y="320" width="70" height="50" rx="25" fill="url(#phoneGrad)" stroke="#60A5FA" stroke-width="2" opacity="0.6"/>
+  <rect x="95" y="335" width="40" height="20" rx="6" fill="#1F2937" opacity="0.4"/>
+  
+  <!-- Earbuds -->
+  <circle cx="280" cy="120" r="22" fill="url(#laptopGrad)" stroke="#FBBF24" stroke-width="2" opacity="0.6"/>
+  <circle cx="330" cy="120" r="22" fill="url(#laptopGrad)" stroke="#FBBF24" stroke-width="2" opacity="0.6"/>
+  <circle cx="280" cy="120" r="8" fill="#1F2937" opacity="0.3"/>
+  <circle cx="330" cy="120" r="8" fill="#1F2937" opacity="0.3"/>
+  
+  <!-- Decorative dots -->
+  <circle cx="50" cy="60" r="3" fill="#60A5FA" opacity="0.3"/>
+  <circle cx="380" cy="90" r="4" fill="#FBBF24" opacity="0.3"/>
+  <circle cx="370" cy="350" r="3" fill="#60A5FA" opacity="0.3"/>
+  <circle cx="40" cy="300" r="4" fill="#FBBF24" opacity="0.3"/>
+</svg>

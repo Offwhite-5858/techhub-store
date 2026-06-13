@@ -31,7 +31,7 @@ export async function updateOrderStatus(id, status) {
   if (error) console.error(error);
 }
 
-// HERO SETTINGS
+// HERO
 export async function fetchHero() {
   const { data, error } = await supabase.from("hero_settings").select("*").single();
   if (error && error.code !== "PGRST116") console.error(error);
@@ -42,13 +42,24 @@ export async function saveHero(hero) {
   const { error } = await supabase.from("hero_settings").upsert({ id: 1, ...hero });
   if (error) console.error(error);
 }
+
+// SITE SETTINGS (Announcement Bar)
+export async function fetchSiteSettings() {
+  const { data, error } = await supabase.from("site_settings").select("*").single();
+  if (error && error.code !== "PGRST116") console.error(error);
+  return data || { announcement_active: false, announcement_text: "" };
+}
+
+export async function saveSiteSettings(settings) {
+  const { error } = await supabase.from("site_settings").upsert({ id: 1, ...settings });
+  if (error) console.error(error);
+}
+
 // REVIEWS
 export async function fetchReviews(productId) {
-  const { data, error } = await supabase
-    .from("reviews")
-    .select("*")
-    .eq("product_id", productId)
-    .order("created_at", { ascending: false });
+  let query = supabase.from("reviews").select("*").order("created_at", { ascending: false });
+  if (productId) query = query.eq("product_id", productId);
+  const { data, error } = await query;
   if (error) console.error(error);
   return data || [];
 }

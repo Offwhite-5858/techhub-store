@@ -5,14 +5,17 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { fetchProducts } from "@/lib/api";
 import ProductCard from "@/components/products/ProductCard";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
 export default function FeaturedProducts() {
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function load() {
       const data = await fetchProducts();
       setProducts(data || []);
+      setLoading(false);
     }
     load();
   }, []);
@@ -32,14 +35,16 @@ export default function FeaturedProducts() {
           </Link>
         </div>
 
-        {featured.length > 0 ? (
+        {loading ? (
+          <LoadingSpinner />
+        ) : featured.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {featured.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>
         ) : (
-          <div className="text-center py-12 text-dark-400">Loading products...</div>
+          <div className="text-center py-12 text-dark-400">No featured products yet.</div>
         )}
 
         <div className="text-center mt-10 sm:hidden">
