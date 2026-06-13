@@ -7,6 +7,7 @@ import siteConfig from "@/data/siteConfig";
 import { fetchSiteSettings } from "@/lib/api";
 
 const navLinks = [
+    { name: "Home", href: "/" },
   { name: "Phones", href: "/products?category=phones" },
   { name: "Laptops", href: "/products?category=laptops" },
   { name: "Audio", href: "/products?category=accessories" },
