@@ -44,7 +44,7 @@ export const metadata = {
       "Shop smartphones, laptops & accessories at unbeatable prices. Free shipping nationwide with warranty.",
     images: [
       {
-        url: "/og-image.png",
+        url: "https://techhub-store-five.vercel.app/og-image.svg",
         width: 1200,
         height: 630,
         alt: "TechHub Store - Latest Tech at Best Prices",
@@ -56,7 +56,7 @@ export const metadata = {
     title: "TechHub Store | Best Tech Prices",
     description:
       "Premium tech at unbeatable prices with free shipping nationwide.",
-    images: ["/og-image.png"],
+    images: ["https://techhub-store-five.vercel.app/og-image.svg"],
   },
   robots: {
     index: true,
