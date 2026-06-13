@@ -104,15 +104,23 @@ export default function ProductDetailPage() {
 
         {/* Product Detail */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 mb-16 sm:mb-20">
-          {/* Product Image */}
-          <div className="bg-white rounded-2xl sm:rounded-3xl border border-gray-100 p-6 sm:p-10 flex items-center justify-center h-72 sm:h-80 md:h-96 lg:h-[500px]">
-            {imageUrl ? (
-              <img src={imageUrl} alt={product.name} className="w-full h-full object-contain" />
-            ) : (
-              <span className="text-7xl sm:text-8xl md:text-9xl lg:text-[12rem]">
-                {category === "phones" ? "📱" : category === "laptops" ? "💻" : category === "accessories" ? "🎧" : "⌚"}
-              </span>
-            )}
+          {/* Product Image - Now responsive like the card */}
+          <div className="bg-white rounded-2xl sm:rounded-3xl border border-gray-100 overflow-hidden">
+            <div className="relative w-full aspect-square bg-gradient-to-br from-gray-50 to-white">
+              {imageUrl ? (
+                <img
+                  src={imageUrl}
+                  alt={product.name}
+                  className="w-full h-full object-contain p-6 sm:p-10 md:p-12"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center">
+                  <span className="text-7xl sm:text-8xl md:text-9xl lg:text-[10rem]">
+                    {category === "phones" ? "📱" : category === "laptops" ? "💻" : category === "accessories" ? "🎧" : "⌚"}
+                  </span>
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Product Info */}
@@ -123,10 +131,16 @@ export default function ProductDetailPage() {
             {/* Rating Summary */}
             <div className="flex items-center gap-1 mb-4">
               {[1, 2, 3, 4, 5].map((star) => (
-                <Star key={star} size={14} className={star <= Math.round(averageRating) ? "text-accent-400 fill-accent-400" : "text-gray-300"} />
+                <Star
+                  key={star}
+                  size={14}
+                  className={star <= Math.round(averageRating) ? "text-accent-400 fill-accent-400" : "text-gray-300"}
+                />
               ))}
               <span className="text-sm text-dark-400 ml-1">
-                {reviews.length > 0 ? `${averageRating.toFixed(1)} (${reviews.length} reviews)` : "No reviews yet"}
+                {reviews.length > 0
+                  ? `${averageRating.toFixed(1)} (${reviews.length} reviews)`
+                  : "No reviews yet"}
               </span>
             </div>
 
@@ -136,7 +150,9 @@ export default function ProductDetailPage() {
               {marketPrice > ourPrice && (
                 <>
                   <span className="text-lg sm:text-xl text-dark-400 line-through">{formatPrice(marketPrice)}</span>
-                  <span className="bg-green-100 text-green-700 text-sm font-semibold px-3 py-1 rounded-full">Save {savingsPercent}%</span>
+                  <span className="bg-green-100 text-green-700 text-sm font-semibold px-3 py-1 rounded-full">
+                    Save {savingsPercent}%
+                  </span>
                 </>
               )}
             </div>
@@ -159,9 +175,19 @@ export default function ProductDetailPage() {
             {/* Quantity & Buttons */}
             <div className="flex flex-col sm:flex-row gap-3 mb-4">
               <div className="flex items-center gap-3 bg-white border border-gray-200 rounded-2xl px-4 py-3">
-                <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="text-dark-400 hover:text-dark-600 font-bold text-lg">−</button>
+                <button
+                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                  className="text-dark-400 hover:text-dark-600 font-bold text-lg"
+                >
+                  −
+                </button>
                 <span className="w-8 text-center font-semibold text-dark-900">{quantity}</span>
-                <button onClick={() => setQuantity(quantity + 1)} className="text-dark-400 hover:text-dark-600 font-bold text-lg">+</button>
+                <button
+                  onClick={() => setQuantity(quantity + 1)}
+                  className="text-dark-400 hover:text-dark-600 font-bold text-lg"
+                >
+                  +
+                </button>
               </div>
               <button
                 onClick={addToCart}
@@ -182,9 +208,15 @@ export default function ProductDetailPage() {
 
             {/* Trust Badges */}
             <div className="flex flex-wrap gap-4 text-xs sm:text-sm text-dark-500">
-              <span className="flex items-center gap-1.5"><Truck size={14} className="text-green-600" /> Free Shipping</span>
-              <span className="flex items-center gap-1.5"><Shield size={14} className="text-green-600" /> 1 Year Warranty</span>
-              <span className="flex items-center gap-1.5"><RotateCcw size={14} className="text-green-600" /> 7-Day Returns</span>
+              <span className="flex items-center gap-1.5">
+                <Truck size={14} className="text-green-600" /> Free Shipping
+              </span>
+              <span className="flex items-center gap-1.5">
+                <Shield size={14} className="text-green-600" /> 1 Year Warranty
+              </span>
+              <span className="flex items-center gap-1.5">
+                <RotateCcw size={14} className="text-green-600" /> 7-Day Returns
+              </span>
             </div>
           </div>
         </div>
@@ -195,7 +227,7 @@ export default function ProductDetailPage() {
             <div>
               <h2 className="text-xl sm:text-2xl font-bold text-dark-900">Customer Reviews</h2>
               <p className="text-sm text-dark-500 mt-1">
-                {reviews.length} review{reviews.length !== 1 ? "s" : ""} 
+                {reviews.length} review{reviews.length !== 1 ? "s" : ""}
                 {reviews.length > 0 && ` • ${averageRating.toFixed(1)} average rating`}
               </p>
             </div>
@@ -254,12 +286,24 @@ export default function ProductDetailPage() {
           <section className="mb-12 sm:mb-16">
             <div className="flex items-center justify-between mb-6 sm:mb-8">
               <div>
-                <p className="text-xs sm:text-sm font-semibold text-brand-600 uppercase tracking-wider mb-1">Similar Products</p>
+                <p className="text-xs sm:text-sm font-semibold text-brand-600 uppercase tracking-wider mb-1">
+                  Similar Products
+                </p>
                 <h2 className="text-xl sm:text-2xl font-bold text-dark-900">
-                  More in {category === "phones" ? "Phones" : category === "laptops" ? "Laptops" : category === "accessories" ? "Audio" : "Wearables"}
+                  More in{" "}
+                  {category === "phones"
+                    ? "Phones"
+                    : category === "laptops"
+                    ? "Laptops"
+                    : category === "accessories"
+                    ? "Audio"
+                    : "Wearables"}
                 </h2>
               </div>
-              <Link href={`/products?category=${category}`} className="hidden sm:flex items-center gap-1 text-sm text-brand-600 font-medium hover:text-brand-700 transition-colors">
+              <Link
+                href={`/products?category=${category}`}
+                className="hidden sm:flex items-center gap-1 text-sm text-brand-600 font-medium hover:text-brand-700 transition-colors"
+              >
                 View All →
               </Link>
             </div>
@@ -268,7 +312,10 @@ export default function ProductDetailPage() {
                 <ProductCard key={p.id} product={p} />
               ))}
             </div>
-            <Link href={`/products?category=${category}`} className="sm:hidden flex items-center justify-center gap-1 mt-4 text-sm text-brand-600 font-medium">
+            <Link
+              href={`/products?category=${category}`}
+              className="sm:hidden flex items-center justify-center gap-1 mt-4 text-sm text-brand-600 font-medium"
+            >
               View All →
             </Link>
           </section>
@@ -279,10 +326,15 @@ export default function ProductDetailPage() {
           <section>
             <div className="flex items-center justify-between mb-6 sm:mb-8">
               <div>
-                <p className="text-xs sm:text-sm font-semibold text-brand-600 uppercase tracking-wider mb-1">You Might Also Like</p>
+                <p className="text-xs sm:text-sm font-semibold text-brand-600 uppercase tracking-wider mb-1">
+                  You Might Also Like
+                </p>
                 <h2 className="text-xl sm:text-2xl font-bold text-dark-900">Explore More</h2>
               </div>
-              <Link href="/products" className="hidden sm:flex items-center gap-1 text-sm text-brand-600 font-medium hover:text-brand-700 transition-colors">
+              <Link
+                href="/products"
+                className="hidden sm:flex items-center gap-1 text-sm text-brand-600 font-medium hover:text-brand-700 transition-colors"
+              >
                 View All Products →
               </Link>
             </div>
@@ -291,7 +343,10 @@ export default function ProductDetailPage() {
                 <ProductCard key={p.id} product={p} />
               ))}
             </div>
-            <Link href="/products" className="sm:hidden flex items-center justify-center gap-1 mt-4 text-sm text-brand-600 font-medium">
+            <Link
+              href="/products"
+              className="sm:hidden flex items-center justify-center gap-1 mt-4 text-sm text-brand-600 font-medium"
+            >
               View All Products →
             </Link>
           </section>
