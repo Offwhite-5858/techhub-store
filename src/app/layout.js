@@ -5,13 +5,13 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata = {
-  metadataBase: new URL("https://techhub-store.vercel.app"),
+  metadataBase: new URL("https://techhub-store-five.vercel.app"),
   title: {
-    default: "TechHub Store | Latest Tech at Best Prices with Free Shipping",
+    default: "TechHub Store | Best Tech Prices in Nigeria",
     template: "%s | TechHub Store",
   },
   description:
-    "Buy smartphones, laptops, accessories & smart devices at the best prices in Nigeria. Free shipping nationwide, warranty included, and 7-day returns.",
+    "Shop smartphones, laptops & accessories at unbeatable prices. Free shipping nationwide with warranty and 7-day returns.",
   keywords: [
     "buy phones Nigeria",
     "laptops Lagos",
@@ -26,7 +26,7 @@ export const metadata = {
     "cheap laptops",
     "TechHub Store",
   ],
-  authors: [{ name: "TechHub Store", url: "https://techhub-store.vercel.app" }],
+  authors: [{ name: "TechHub Store", url: "https://techhub-store-five.vercel.app" }],
   creator: "TechHub Store",
   publisher: "TechHub Store",
   formatDetection: {
@@ -37,11 +37,11 @@ export const metadata = {
   openGraph: {
     type: "website",
     locale: "en_NG",
-    url: "https://techhub-store.vercel.app",
+    url: "https://techhub-store-five.vercel.app",
     siteName: "TechHub Store",
-    title: "TechHub Store | Latest Tech at Best Prices with Free Shipping",
+    title: "TechHub Store | Best Tech Prices in Nigeria",
     description:
-      "Premium smartphones, laptops, and accessories at unbeatable prices. Free shipping nationwide, warranty included.",
+      "Shop smartphones, laptops & accessories at unbeatable prices. Free shipping nationwide with warranty.",
     images: [
       {
         url: "/og-image.png",
@@ -53,7 +53,7 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "TechHub Store | Latest Tech at Best Prices",
+    title: "TechHub Store | Best Tech Prices",
     description:
       "Premium tech at unbeatable prices with free shipping nationwide.",
     images: ["/og-image.png"],
